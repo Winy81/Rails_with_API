@@ -8,13 +8,13 @@ RSpec.describe Article, type: :model do
   it 'should validate the presence of the tilte' do
   	article = FactoryBot.build :article, title:""
   	expect(article).not_to be_valid
-  	expect(article.errors.message[:title]).to include("can be blank")
+  	expect(article.errors.messages[:title]).to include('can not be blank')
   end
 
   it 'should validate the presence of the content' do
   	article = FactoryBot.build :article, content:""
   	expect(article).not_to be_valid
-  	expect(article.errors.message[:content]).to include("can be blank")
+  	expect(article.errors.messages[:content]).to include('can not be blank')
   end
 
 
