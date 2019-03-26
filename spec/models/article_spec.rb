@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Article, type: :model do
+
+ 
+describe '#validations' do
+
   it 'should be that factory is valid' do
   	expect(FactoryBot.build :article).to be_valid
   end
@@ -29,5 +33,8 @@ RSpec.describe Article, type: :model do
     expect(invalid_article).not_to be_valid
     expect(invalid_article.errors.messages[:slug]).to include('should be uniqe')
   end
+  
+end
+
 
 end
