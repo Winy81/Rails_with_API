@@ -42,7 +42,7 @@ describe '.recent' do
  	  old_article = FactoryBot.create :article
  	  newer_article = FactoryBot.create :article
  	  expect(described_class.recent).to eq([newer_article,old_article])
- 	  old_article.update_colum :created_at, Time.now
+ 	  old_article.update_column :created_at, Time.now
  	  expect(described_class.recent).to eq([old_article,newer_article])
 	end
 end
