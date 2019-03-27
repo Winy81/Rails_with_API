@@ -11,8 +11,13 @@ describe ArticlesController do
 	   		create_list = FactoryBot.create :article
 	   		get :index
 	   		json = JSON.parse(response.body)
-	   		#json_data = json[:data]
-	   		#expect(json_data.length).to eq(2)
+	   		json_data = json['data']
+	   		expect(json_data.length).to eq(1)
+	   		expect(json_data[0]['attributes']).to eq({
+	   			"title" => "MyString 1",
+	   			"content" => "MyText 1",
+	   			"slug" => "MySlug 1"
+	   		})
 	   end
     end
 end
