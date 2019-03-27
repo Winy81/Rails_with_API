@@ -33,7 +33,18 @@ describe '#validations' do
     expect(invalid_article).not_to be_valid
     expect(invalid_article.errors.messages[:slug]).to include('should be uniqe')
   end
-  
+
+end
+
+
+describe '.recent' do
+	it 'should list recent article first' do
+ 	  old_article = FactoryBot.create :article
+ 	  newer_article = FactoryBot.create :article
+ 	  expect(described_class.recent).to eq([newer_article,old_article])
+ 	  old_article.update_colum :created_at, Time.now
+ 	  expect(described_class.recent).to eq([old_article,newer_article])
+	end
 end
 
 
