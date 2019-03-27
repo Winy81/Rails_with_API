@@ -8,6 +8,7 @@ describe ArticlesController do
 	   end 
 
 	   it 'should return proper json' do
+	   		create_list = FactoryBot.create :article
 	   		get :index
 	   		json = JSON.parse(response.body)
 	   		#json_data = json[:data]
