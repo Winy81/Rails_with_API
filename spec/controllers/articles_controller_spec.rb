@@ -20,5 +20,15 @@ describe ArticlesController do
 	   			"slug" => "MySlug 1"
 	   		})
 	   end
+
+	   it 'should return articles in the proper order' do
+	   		old_article = FactoryBot.create :article
+	   		newer_article = FactoryBot.create :article
+	   		subject
+	   		json = JSON.parse(response.body)
+	   		json_data = json['data']
+	   		expect(json_data.first['id']).to eq(newer_article.id.to_s)
+	   		expect(json_data.last['id']).to eq(old_article.id.to_s)
+	   end
     end
 end
