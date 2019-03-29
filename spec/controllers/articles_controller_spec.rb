@@ -34,7 +34,9 @@ describe ArticlesController do
 	   it 'should paginate reslults' do
 	   	FactoryBot.create_list :article, 3
 	   	get :index, params: {page:2,per_page:1}
-	   	expect(json_data.lenght).to eq 1
+	   	json = JSON.parse(response.body)
+	   	json_data = json['data']
+	   	expect(json_data.length).to eq 1
 	   	second_article = Article.recent.second.id.to_s
 	   	expect(json_data.first['id']).to eq(second_article)
 
