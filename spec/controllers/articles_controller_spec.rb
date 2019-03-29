@@ -35,7 +35,8 @@ describe ArticlesController do
 	   	FactoryBot.create_list :article, 3
 	   	get :index, params: {page:2,per_page:1}
 	   	expect(json_data.lenght).to eq 1
-	   	expect(json_data.first['id']).to eq(Article.recent.second.id.to_s)
+	   	second_article = Article.recent.second.id.to_s
+	   	expect(json_data.first['id']).to eq(second_article)
 
 	   end
     end
