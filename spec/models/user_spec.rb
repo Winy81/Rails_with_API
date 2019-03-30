@@ -20,10 +20,11 @@ RSpec.describe User, type: :model do
   		user = FactoryBot.create :user
   		user2 = FactoryBot.build :user, login: user.login
   		expect(user2).not_to be_valid
+  		expect(user2.errors.messages[:login]).to include("should be uniqe")
 
   		user2.login = 'new_login'
   		expect(user2).to be_valid
   	end
-  	
+
   end
 end
