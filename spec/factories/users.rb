@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user do
-    sequence(:login) { |n| "jdo #{n}" }
-    name { "John Do" }
+    sequence(:login) { |n| "jdoe #{n}" }
+    name { "John Doe" }
     url { "http://example.com" }
     avatar_url { "http://example.com/avatar" }
     provider { "GitHub" }
