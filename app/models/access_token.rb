@@ -1,6 +1,4 @@
 class AccessToken < ApplicationRecord
-  validates_presence_of :token, message: 'can not be blank'
-  validates_uniqueness_of :token, message: "should be uniqe"
 
   belongs_to :user
 

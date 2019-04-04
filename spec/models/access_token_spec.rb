@@ -3,16 +3,13 @@ require 'rails_helper'
 RSpec.describe AccessToken, type: :model do
   describe '#validations' do
   	it 'should have valid factory' do
-  		
+  	
   	end
 
   	it 'should validate token' do
-  		
+  
   	end
 
-  	it 'should be unique' do
-  		
-  	end
 
   describe '#new' do
     it 'should have a token present after initialize' do
