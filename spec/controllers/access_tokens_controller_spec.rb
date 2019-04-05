@@ -30,6 +30,8 @@ RSpec.describe AccessTokensController, type: :controller do
 
 
 
+
+
 	context 'when no code provided' do
       subject { post :create }
       it_behaves_like "unauthorized_requests"
@@ -50,7 +52,11 @@ RSpec.describe AccessTokensController, type: :controller do
     end
 
     context 'when success request' do
-
+      subject { post :create, params: { code: 'valid_code' } }
+    	it 'should return 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
     end
 end 
 end
