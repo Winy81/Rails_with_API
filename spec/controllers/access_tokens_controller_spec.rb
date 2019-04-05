@@ -4,8 +4,7 @@ RSpec.describe AccessTokensController, type: :controller do
 
 	describe '#create' do
  	  shared_examples_for "unauthorized_requests" do
-
- 	  	let(:error) do
+		let(:error) do
         {
           "status" => "401",
           "source" => { "pointer" => "/code" },
@@ -48,6 +47,7 @@ RSpec.describe AccessTokensController, type: :controller do
       end
 
       subject { post :create, params: { code: 'invalid_code' } }
+
       it_behaves_like "unauthorized_requests"
     end
 
@@ -72,17 +72,19 @@ RSpec.describe AccessTokensController, type: :controller do
 
         subject { post :create, params: { code: 'valid_code' } }
     		it 'should return 201 status code' do
-     	    subject
-       	    expect(response).to have_http_status(:created)
+     	    	subject
+       	    	expect(response).to have_http_status(:created)
         end
 
-         it 'should return proper json body' do
-       		 expect{ subject }.to change{ User.count }.by(1)
-       		 user = User.find_by(login: 'jdoe1')
-       		 json = JSON.parse(response.body)
-       		 json_data = json['data']
-       		 expect(json_data['attributes']).to eq(
-          { 'token' => user.access_token.token }
+        	 it 'should return proper json body' do
+       			 expect{ subject }.to change{ User.count }.by(1)
+       			 user = User.find_by(login: 'jdoe1')
+       			 json = JSON.parse(response.body)
+       			 json_data = json['data']
+       			 pp json_data
+       			 pp json
+       			 expect(json_data['attributes']).to eq(
+          			{ 'token' => user.access_token.token }
         )
         end
     end
