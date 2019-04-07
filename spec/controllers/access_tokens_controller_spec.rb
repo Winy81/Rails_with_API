@@ -110,6 +110,8 @@ end
 
       it 'should return proper error json' do
         subject
+        user = User.find_by(login: 'jdoe1')
+       	json = JSON.parse(response.body)
         expect(json['errors']).to include(authorization_error)
       end
     end
