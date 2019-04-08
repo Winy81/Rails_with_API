@@ -3,6 +3,8 @@ require 'rails_helper'
 describe ArticlesController do
 	describe '#index' do 
 	   subject{get :index}
+
+
 	   it 'should return success response' do
 	   		subject
 	   		expect(response).to have_http_status(:ok)
@@ -42,4 +44,26 @@ describe ArticlesController do
 
 	   end
     end
+
+
+    describe '#show' do
+    let(:article) { FactoryBot.create :article }
+    subject { get :show, params: { id: article.id } }
+
+    it 'should return success response' do
+      subject
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'should return proper json' do
+      subject
+      json = JSON.parse(response.body)
+	  json_data = json['data']
+      expect(json_data['attributes']).to eq({
+          "title" => article.title,
+          "content" => article.content,
+          "slug" => article.slug
+      })
+    end
+  end
 end

@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def show
-		render json: "Hello from show action"
+		render json: Article.find(params[:id])
 	end
 
 end
