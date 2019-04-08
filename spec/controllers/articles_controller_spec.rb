@@ -46,8 +46,8 @@ describe ArticlesController do
     end
 
 
-    describe '#show' do
-    let(:article) { FactoryBot.create :article }
+  describe '#show' do
+   let(:article) { FactoryBot.create :article }
     subject { get :show, params: { id: article.id } }
 
     it 'should return success response' do
@@ -65,5 +65,22 @@ describe ArticlesController do
           "slug" => article.slug
       })
     end
+  end
+
+
+
+  describe '#create' do
+    subject { post :create }
+
+    context 'when no code provided' do
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when invalid code provided' do
+      before { request.headers['authorization'] = 'Invalid token' }
+      it_behaves_like 'forbidden_requests'
+    end
+
+   
   end
 end
