@@ -1,4 +1,7 @@
 require 'rails_helper'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 describe ArticlesController do
 	describe '#index' do 
@@ -70,6 +73,8 @@ describe ArticlesController do
 
 
   describe '#create' do
+  	DatabaseCleaner.clean
+
     subject { post :create }
 
     context 'when no code provided' do
@@ -81,6 +86,40 @@ describe ArticlesController do
       it_behaves_like 'forbidden_requests'
     end
 
+
+    context 'when authorized' do
+      user = FactoryBot.create :user
+      pp User.all
+      let(:access_token) { user.create_access_token }
+      before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+
+      context 'when invalid parameters provided' do
+        let(:invalid_attributes) do
+          {
+            data: {
+              attributes: {
+                tittle: '',
+                content: ''
+              }
+            }
+          }
+        end
+
+        subject { post :create, params: invalid_attributes }
+
+        it 'should return 422 status code' do
+          subject
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        
+      end
+
+      context 'when success request sent' do
+
+      end
+
+    end
    
   end
 end
