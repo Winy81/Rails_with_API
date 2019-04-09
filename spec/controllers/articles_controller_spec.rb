@@ -112,7 +112,26 @@ describe ArticlesController do
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
-        
+        it 'should return proper error json' do
+          subject
+          json = JSON.parse(response.body)
+          expect(json['errors']).to include(
+            {
+              "source" => { "pointer" => "/data/attributes/title" },
+              "detail" =>  "can not be blank"
+            },
+            {
+              "source" => { "pointer" => "/data/attributes/content" },
+              "detail" =>  "can not be blank"
+            },
+            {
+              "source" => { "pointer" => "/data/attributes/slug" },
+              "detail" =>  "can not be blank"
+            }
+          )
+        end
+
+
       end
 
       context 'when success request sent' do
