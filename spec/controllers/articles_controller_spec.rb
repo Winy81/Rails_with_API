@@ -174,4 +174,108 @@ describe ArticlesController do
     end
    
   end
+
+
+
+  describe '#update' do
+    let(:article) { FactoryBot.create :article }
+
+    subject { patch :update, params: { id: article.id } }
+
+    context 'when no code provided' do
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when invalid code provided' do
+      before { request.headers['authorization'] = 'Invalid token' }
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when authorized' do
+      user = FactoryBot.create :user
+      let(:access_token) { user.create_access_token }
+
+      before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+
+      context 'when invalid parameters provided' do
+        let(:invalid_attributes) do
+          {
+            data: {
+              attributes: {
+                title: '',
+                content: ''
+              }
+            }
+          }
+        end
+
+        subject do
+          patch :update, params: invalid_attributes.merge(id: article.id)
+        end
+
+        it 'should return 422 status code' do
+          subject
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it 'should return proper error json' do
+          subject
+          json = JSON.parse(response.body)
+          expect(json['errors']).to include(
+            {
+              "source" => { "pointer" => "/data/attributes/title" },
+              "detail" =>  "can't be blank"
+            },
+            {
+              "source" => { "pointer" => "/data/attributes/content" },
+              "detail" =>  "can't be blank"
+            }
+          )
+        end
+      end
+
+      context 'when success request sent' do
+        user = FactoryBot.create :user
+        let(:access_token) { user.create_access_token }
+        before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+
+        let(:valid_attributes) do
+          {
+            'data' => {
+              'attributes' => {
+                'title' => 'Awesome article',
+                'content' => 'Super content',
+                'slug' => 'awesome-article'
+              }
+            }
+          }
+        end
+
+        subject do
+          patch :update, params: valid_attributes.merge(id: article.id)
+        end
+
+        it 'should have 200 status code' do
+          subject
+          expect(response).to have_http_status(:ok)
+        end
+
+        it 'should have proper json body' do
+          subject
+          json = JSON.parse(response.body)
+	      json_data = json['data']
+          expect(json_data['attributes']).to include(
+            valid_attributes['data']['attributes']
+          )
+        end
+
+        it 'should update the article' do
+          subject
+          expect(article.reload.title).to eq(
+            valid_attributes['data']['attributes']['title']
+          )
+        end
+      end
+    end
+  end
 end
