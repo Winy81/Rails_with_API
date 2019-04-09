@@ -224,11 +224,11 @@ describe ArticlesController do
           expect(json['errors']).to include(
             {
               "source" => { "pointer" => "/data/attributes/title" },
-              "detail" =>  "can't be blank"
+              "detail" =>  "can not be blank"
             },
             {
               "source" => { "pointer" => "/data/attributes/content" },
-              "detail" =>  "can't be blank"
+              "detail" =>  "can not be blank"
             }
           )
         end
