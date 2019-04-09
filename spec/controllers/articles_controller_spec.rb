@@ -89,7 +89,6 @@ describe ArticlesController do
 
     context 'when authorized' do
       user = FactoryBot.create :user
-      pp User.all
       let(:access_token) { user.create_access_token }
       before { request.headers['authorization'] = "Bearer #{access_token.token}" }
 
@@ -98,7 +97,7 @@ describe ArticlesController do
           {
             data: {
               attributes: {
-                tittle: '',
+                title: '',
                 content: ''
               }
             }
@@ -135,8 +134,21 @@ describe ArticlesController do
       end
 
       context 'when success request sent' do
-
-      end
+      	user = FactoryBot.create :user
+      	let(:access_token) { user.create_access_token }
+        before { request.headers['authorization'] = "Bearer #{access_token.token}" }
+      	let(:valid_attributes) do
+          {
+            data: {
+              attributes: {
+                title: 'Awesome article',
+                content: 'Super content',
+                slug: 'awesome-article'
+              }
+            }
+          }
+        end
+    end
 
     end
    
