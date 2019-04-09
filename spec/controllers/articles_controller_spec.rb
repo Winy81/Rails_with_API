@@ -139,15 +139,36 @@ describe ArticlesController do
         before { request.headers['authorization'] = "Bearer #{access_token.token}" }
       	let(:valid_attributes) do
           {
-            data: {
-              attributes: {
-                title: 'Awesome article',
-                content: 'Super content',
-                slug: 'awesome-article'
+            'data' => {
+              'attributes' => {
+                'title' => 'Awesome article',
+                'content' => 'Super content',
+                'slug' => 'awesome-article'
               }
             }
           }
         end
+    	
+    	subject { post :create, params: valid_attributes }
+
+        it 'should have 201 status code' do
+          subject
+          expect(response).to have_http_status(:created)
+        end
+
+        it 'should have proper json body' do
+          subject
+          json = JSON.parse(response.body)
+	      json_data = json['data']
+          expect(json_data['attributes']).to include(
+            valid_attributes['data']['attributes']
+          )
+        end
+
+        it 'should create the article' do
+          expect{ subject }.to change{ Article.count }.by(1)
+        end
+
     end
 
     end
