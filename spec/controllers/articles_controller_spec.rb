@@ -291,6 +291,8 @@ describe ArticlesController do
 
 
   describe '#destroy' do
+  	
+
     let(:user) { FactoryBot.create :user }
     let(:article) { FactoryBot.create :article, user: user }
     let(:access_token) { user.create_access_token }
@@ -324,7 +326,7 @@ describe ArticlesController do
 
         it 'should have 204 status code' do
           subject
-          expect(response).to have_http_status(:no_content)
+          expect(response).to have_http_status(204)
         end
 
         it 'should have empty json body' do
