@@ -24,6 +24,18 @@ RSpec.describe CommentsController, type: :controller do
     let(:valid_attributes) {{ content: 'my awsome comment for article'}}
     let(:invalid_attributes) {{ content: ''}}
 
+    context 'when no authorized' do
+      subject { post :create, params: { article_id: article.id }}
+
+      it_behaves_like 'forbidden_requests'
+    end
+
+    context 'when authorized' do
+      let(:user) {FactoryBot.create :user}
+      let(:access_token) {user.create_access_token}
+      before {request.headers['authorization'] = "Bearer #{access_token.token}"}
+    
+
     context "with valid params" do
       it "creates a new Comment" do
         expect {
@@ -47,7 +59,7 @@ RSpec.describe CommentsController, type: :controller do
         expect(response.content_type).to eq('application/json')
       end
     end
+
+    end 
   end
-
-
 end
