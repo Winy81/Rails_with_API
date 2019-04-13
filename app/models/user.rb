@@ -4,6 +4,7 @@ class User < ApplicationRecord
 	validates_uniqueness_of :login, message: "should be uniqe"
 
 	has_many :article, dependent: :destroy
+	has_many :comments, dependent: :destroy
 
 	has_one :access_token, dependent: :destroy
 
