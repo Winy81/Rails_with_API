@@ -48,7 +48,7 @@ RSpec.describe CommentsController, type: :controller do
         post :create, params: {article_id: article.id, comment: valid_attributes}
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(comment_url(Comment.last))
+        expect(response.location).to eq(article_url(article))
       end
     end
 
